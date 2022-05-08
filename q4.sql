@@ -1,15 +1,10 @@
-select id
-from pilote
-where not EXISTS(
-        select pilote.id
-        from vol,
+SELECT u.nom
+FROM pilote
+         INNER JOIN utilisateur u ON u.id = pilote.id
+WHERE NOT EXISTS(
+        SELECT pilote.id
+        FROM vol,
              aviondefret
-        where vol.piloteid = pilote.id
-          and vol.avionid = aviondefret.id
+        WHERE vol.piloteid = pilote.id
+          AND vol.avionid = aviondefret.id
     );
-
-
-select avionid
-from avion, vol,
-     pilote
-where avion.id = vol.avionid and vol.piloteid = pilote.id

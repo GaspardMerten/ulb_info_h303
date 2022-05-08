@@ -1,30 +1,31 @@
-select piloteid, max(r) as maxConsecutiveDays
-from (
-         select piloteid, row_number() over (partition by value_partition, piloteid) as r
-         from (
-                  select *,
-                         sum(case when x is null then 0 else 1 end)
-                         over (partition by piloteid order by heuredépart) as value_partition
-                  from (
-                           select id, heuredépart, piloteid, delta, case WHEN delta > 1 then id end x
-                           from (
-                                    select id,
+SELECT piloteid, MAX(r) AS maxconsecutivedays
+FROM (
+         SELECT piloteid, ROW_NUMBER() OVER (PARTITION BY value_partition, piloteid) AS r
+         FROM (
+                  SELECT *,
+                         SUM(CASE WHEN x IS NULL THEN 0 ELSE 1 END)
+                         OVER (PARTITION BY piloteid ORDER BY heuredépart) AS value_partition
+                  FROM (
+                           SELECT id, heuredépart, piloteid, delta, CASE WHEN delta > 1 THEN id END x
+                           FROM (
+                                    SELECT id,
                                            piloteid,
-                                           extract(days from heuredépart - previousDate::date) as delta,
+                                           EXTRACT(DAYS FROM heuredépart - previousdate::DATE) AS delta,
                                            heuredépart
-                                    from (
-                                             select id,
+                                    FROM (
+                                             SELECT id,
                                                     heuredépart,
                                                     piloteid,
-                                                    lag(heuredépart::date)
-                                                    over (partition by piloteid ORDER BY heuredépart) as previousDate
-                                             from vol
-                                         ) as pd
-                                ) as p
-                           where delta > 0 or delta IS NULL
-                       ) as p2
-              ) as "*vp"
-     ) as "*2r"
+                                                    LAG(heuredépart::DATE)
+                                                    OVER (PARTITION BY piloteid ORDER BY heuredépart) AS previousdate
+                                             FROM vol
+                                         ) AS pd
+                                ) AS p
+                           WHERE delta > 0
+                              OR delta IS NULL
+                       ) AS p2
+              ) AS "*vp"
+     ) AS "*2r"
 
 
-group by piloteid;
+GROUP BY piloteid;

@@ -1,24 +1,8 @@
-select distinct a.average_dist, (v.heurearrivée :: date) as date, c.nom
-from vol v, company c,
-     (select  distinct avion.compagnieid, avion.id,
-                to_char(
-                    AVG(distance),'99999999999999999D99'
-                    )AS average_dist
-                from   vol
-                INNER JOIN avion ON avion.id = vol.avionid
-                group by
-                        avion.id
-                order by
-                        id) as a
-where a.compagnieid=c.id and a.id= v.avionid and
-      (c.nom = 'ADVANCED AIR, LLC' or c.nom = 'ABX Air Inc');
-
-
-
-
-
-
-
-
+SELECT ROUND(AVG(vol.distance)::NUMERIC, 2), c.nom, heuredépart::DATE
+FROM vol
+         INNER JOIN avion a ON a.id = vol.avionid
+         INNER JOIN company c ON c.id = a.compagnieid
+WHERE c.nom IN ('ABX Air Inc', 'ADVANCED AIR, LLC')
+GROUP BY heuredépart::DATE, c.nom;
 
 

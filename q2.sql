@@ -1,2 +1,3 @@
-SELECT pilote.id, licence
-FROM pilote INNER JOIN voyageur v on v.id = pilote.id
+SELECT pilote.id
+FROM pilote
+         INNER JOIN voyageur v ON v.id = pilote.id
