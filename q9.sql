@@ -15,11 +15,11 @@ CREATE TEMPORARY TABLE IF NOT EXISTS tmp
 );
 
 
-COPY tmp (raw_data, date) FROM STDIN DELIMITER ',' CSV;
+\COPY tmp (raw_data, date) FROM 'data.csv' DELIMITER ',' CSV;
 
 INSERT INTO experts (piloteId, date, nouveau)
 
-SELECT SPLIT_PART(raw_data, '--', 2),
+SELECT SPLIT_PART(raw_data, '--', 2)::uuid,
        date,
        CASE WHEN SPLIT_PART(raw_data, '--', 1) = 'new-expert' THEN TRUE ELSE FALSE END
 FROM tmp
