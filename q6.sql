@@ -1,4 +1,4 @@
-select distinct e1.nom, e2.nom
+select distinct a1.nom, e1.nom, e2.nom,  a2.nom
 from aéroport a1,aéroport a2, etat e1, etat e2, (
     SELECT volallee.aéroportarrivéecode, volallee.aéroportdépartcode
     FROM vol volallee
