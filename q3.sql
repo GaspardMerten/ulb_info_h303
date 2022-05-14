@@ -1,5 +1,3 @@
--- Ville de départ/arrivée ? :( + plusieurs vols sont TOP vol
-
 SELECT id, heurearrivée, heurearrivée, depart.etatcode, arrive.etatcode, aéroportarrivéecode, aéroportdépartcode
 FROM (SELECT *
       FROM vol
