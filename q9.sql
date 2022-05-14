@@ -15,7 +15,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS tmp
 );
 
 
-\COPY tmp (raw_data, date) FROM 'data.csv' DELIMITER ',' CSV;
+\COPY tmp (raw_data, DATE) FROM 'data.csv' DELIMITER ',' CSV;
 
 INSERT INTO experts (piloteId, date, nouveau)
 
